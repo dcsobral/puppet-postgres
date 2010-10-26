@@ -13,12 +13,15 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 class postgres {
-	package { [postgresql, ruby-postgres, postgresql-server]: ensure => installed }
+	package { 'postgresql': ensure => installed }
 
-    service { postgresql:
-        ensure => running,
-        enable => true,
-        hasstatus => true,
-        subscribe => [Package[postgresql-server], Package[postgresql]]
-    }
+	service { 'postgresql':
+		ensure => running,
+		enable => true,
+		hasstatus => true,
+		subscribe => Package['postgresql'],
+	}
 }
+
+# vim modeline - have 'set modeline' and 'syntax on' in your ~/.vimrc.
+# vi:syntax=puppet:filetype=puppet:ts=4:et:
