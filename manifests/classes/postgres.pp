@@ -15,9 +15,14 @@
 class postgres {
 	package { 'postgresql': ensure => installed }
 
+    user { 'postgres':
+        ensure  => present,
+        require => Package['postgresql'],
+    }
+
 	service { 'postgresql':
-		ensure => running,
-		enable => true,
+		ensure    => running,
+		enable    => true,
 		hasstatus => true,
 		subscribe => Package['postgresql'],
 	}

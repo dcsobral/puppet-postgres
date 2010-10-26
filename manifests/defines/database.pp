@@ -13,28 +13,31 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 define postgres::database($ensure, $owner = false) {
-    $ownerstring = $owner ? {
-        false => "",
-        default => "-O $owner"
-    }
+	$ownerstring = $owner ? {
+		false   => "",
+		default => "-O $owner"
+	}
 
-    case $ensure {
-        present: {
-            exec { "Create $name postgres db":
-                command => "/usr/bin/createdb $ownerstring $name",
-                user => "postgres",
-                unless => "/usr/bin/psql -l | grep '$name  *|'"
-            }
-        }
-        absent:  {
-            exec { "Remove $name postgres db":
-                command => "/usr/bin/drop $name",
-                onlyif => "/usr/bin/psql -l | grep '$name  *|'",
-                user => "postgres"
-            }
-        }
-        default: {
-            fail "Invalid 'ensure' value '$ensure' for postgres::database"
-        }
-    }
+	case $ensure {
+		present: {
+			exec { "Create $name postgres db":
+				command => "/usr/bin/createdb $ownerstring $name",
+				user    => "postgres",
+				unless  => "/usr/bin/psql -l | grep '$name  *|'"
+			}
+		}
+		absent:  {
+			exec { "Remove $name postgres db":
+				command => "/usr/bin/drop $name",
+				onlyif  => "/usr/bin/psql -l | grep '$name  *|'",
+				user    => "postgres"
+			}
+		}
+		default: {
+			fail "Invalid 'ensure' value '$ensure' for postgres::database"
+		}
+	}
+    require => Service['postgresql']
 }
+# vim modeline - have 'set modeline' and 'syntax on' in your ~/.vimrc.
+# vi:syntax=puppet:filetype=puppet:ts=4:et:
