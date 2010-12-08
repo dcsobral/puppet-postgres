@@ -12,17 +12,32 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-define postgres::role($ensure, $password = false) {
+define postgres::role($ensure, $password = false, $login = true, $createdb = false, $createrole = false, $superuser = false) {
 	$passtext = $password ? {
 		false   => "",
 		default => "PASSWORD '$password'"
 	}
-
+    $logintext = $login ? {
+        false => "NOLOGIN",
+        true => "LOGIN"
+    }
+    $dbtext = $createdb ? {
+        false => "NOCREATEDB",
+        true => "CREATEDB"
+    }
+    $roletext = $createrole ? {
+        false => "NOCREATEROLE",
+        true => "CREATEROLE"
+    }
+    $supertext = $superuser ? {
+        false => "NOSUPERUSER",
+        true => "SUPERUSER"
+    }
 	case $ensure {
 		present: {
 			# The createuser command always prompts for the password.
 			exec { "Create $name postgres role":
-				command => "/usr/bin/psql -c \"CREATE ROLE $name $passtext\"",
+                command => "/usr/bin/psql -c \"CREATE ROLE $name $passtext $logintext $dbtext $roletext $supertext\"",
 				user    => "postgres",
 				unless  => "/usr/bin/psql -c '\\du' | grep '^  *$name  *|'"
 			}
