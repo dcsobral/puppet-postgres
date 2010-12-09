@@ -1,0 +1,4 @@
+# Database login by backup servers
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+host    all         @backupuser @backupserver         md5
+
