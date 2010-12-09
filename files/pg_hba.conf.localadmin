@@ -1,4 +1,0 @@
-# Database login by UNIX sockets with user name authentication
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
-local   all         postgres                          ident
-

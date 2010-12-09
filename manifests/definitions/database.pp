@@ -12,32 +12,31 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-define postgres::role($ensure, $password = false) {
-	$passtext = $password ? {
+define postgres::database($ensure, $owner = false) {
+	$ownerstring = $owner ? {
 		false   => "",
-		default => "PASSWORD '$password'"
+		default => "-O $owner"
 	}
+
 	case $ensure {
 		present: {
-			# The createuser command always prompts for the password.
-			exec { "Create $name postgres role":
-				command => "/usr/bin/psql -c \"CREATE ROLE $name $passtext\"",
+			exec { "Create $name postgres db":
+				command => "/usr/bin/createdb $ownerstring $name",
 				user    => "postgres",
-				unless  => "/usr/bin/psql -c '\\du' | grep '^  *$name  *|'"
+				unless  => "/usr/bin/psql -l | grep '$name  *|'"
 			}
 		}
 		absent:  {
-			exec { "Remove $name postgres role":
-				command => "/usr/bin/dropeuser $name",
-				user    => "postgres",
-				onlyif  => "/usr/bin/psql -c '\\du' | grep '$name  *|'"
+			exec { "Remove $name postgres db":
+				command => "/usr/bin/drop $name",
+				onlyif  => "/usr/bin/psql -l | grep '$name  *|'",
+				user    => "postgres"
 			}
 		}
 		default: {
-			fail "Invalid 'ensure' value '$ensure' for postgres::role"
+			fail "Invalid 'ensure' value '$ensure' for postgres::database"
 		}
 	}
-    require => Service['postgresql']
 }
 # vim modeline - have 'set modeline' and 'syntax on' in your ~/.vimrc.
 # vi:syntax=puppet:filetype=puppet:ts=4:et:

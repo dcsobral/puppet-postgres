@@ -1,5 +1,0 @@
-# Database login by UNIX sockets or loopback on the same user with ident authentication
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
-local   sameuser    all                               ident
-host    sameuser    all         127.0.0.1/32          ident
-
