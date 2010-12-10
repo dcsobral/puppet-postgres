@@ -1,6 +1,6 @@
 class postgres {
     if $pgversion == "" {
-        "": { exec { '/bin/false # missing postgres version': } }
+        exec { '/bin/false # missing postgres version': }
     }
 
     $PGDATA = "/var/lib/postgresql/$pgversion/main'"
