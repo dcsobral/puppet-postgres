@@ -65,7 +65,7 @@ class postgres {
             ensure => $lens,
             mode   => 0644,
             owner  => "root",
-            source => "puppet:///postgresql/pg_hba.aug",
+            source => "puppet:///postgres/pg_hba.aug",
         }
     }
 }
