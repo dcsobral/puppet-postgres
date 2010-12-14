@@ -62,10 +62,11 @@ class postgres {
         else { $lens = absent }
 
         file { "/usr/share/augeas/lenses/contrib/pg_hba.aug":
-            ensure => $lens,
-            mode   => 0644,
-            owner  => "root",
-            source => "puppet:///postgres/pg_hba.aug",
+            ensure  => $lens,
+            mode    => 0644,
+            owner   => "root",
+            source  => "puppet:///postgres/pg_hba.aug",
+            require => Class['augeas'],
         }
     }
 }
