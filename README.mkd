@@ -4,7 +4,7 @@ Manages postgres configuration.
 
 ## Classes ##
 
-  * postgres
+* postgres
 
 ### postgres ###
 
@@ -13,8 +13,8 @@ at boot.
 
 ## Definitions ##
 
-  * postgres::database
-  * postgres::role
+* postgres::database
+* postgres::role
 
 ### postgres::database ###
 
