@@ -6,7 +6,7 @@ Manages postgres configuration.
 
   * postgres
 
-## postgres ##
+### postgres ###
 
 Ensures virtual package is installed, and that the service is running and starts
 at boot.
@@ -16,14 +16,14 @@ at boot.
   * postgres::database
   * postgres::role
 
-## postgres::database #
+### postgres::database ###
 
   postgres::database { "database":
     ensure => present, # or absent
     owner  => "role",
   }
 
-## postgres::role ##
+### postgres::role ###
 
   postgres::role { "rolename":
     ensure   => present, # or absent
