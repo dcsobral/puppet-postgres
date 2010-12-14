@@ -1,32 +1,32 @@
-====== postgres puppet module ======
+###### postgres puppet module ######
 
 Manages postgres configuration.
 
-===== Classes =====
+##### Classes #####
 
   * postgres
 
-==== postgres ====
+#### postgres ####
 
 Ensures virtual package is installed, and that the service is running and starts
 at boot.
 
-===== Definitions =====
+##### Definitions #####
 
   * postgres::database
   * postgres::role
 
-==== postgres::database ===
+#### postgres::database ###
 
   postgres::database { "database":
-    ensure => present, # or absent
-    owner  => "role",
+    ensure #> present, # or absent
+    owner  #> "role",
   }
 
-==== postgres::role ====
+#### postgres::role ####
 
   postgres::role { "rolename":
-    ensure   => present, # or absent
-    password => "passtext",
+    ensure   #> present, # or absent
+    password #> "passtext",
   }
 
