@@ -56,18 +56,6 @@ class postgres {
                 Package['postgres'],
             ],
         }
-
-        # lens included upstream since augeas 0.7.4
-        if versioncmp($augeasversion, '0.7.3') < 0 { $lens = present }
-        else { $lens = absent }
-
-        file { "/usr/share/augeas/lenses/contrib/pg_hba.aug":
-            ensure  => $lens,
-            mode    => 0644,
-            owner   => "root",
-            source  => "puppet:///postgres/pg_hba.aug",
-            require => Class['augeas'],
-        }
     }
 }
 

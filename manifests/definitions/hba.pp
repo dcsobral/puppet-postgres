@@ -41,8 +41,8 @@ Example usage:
 */
 define postgres::hba ($ensure='present', $type, $database, $user, $address=false, $method, $option=false)
 {
-    include augeas
     include postgres
+    include postgres::augeas::hba
 
     case $type {
         'local': {
