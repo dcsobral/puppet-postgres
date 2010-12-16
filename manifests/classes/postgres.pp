@@ -2,7 +2,7 @@ class postgres {
     if $pgversion == "" {
         exec { '/bin/false # missing postgres version': }
     } else {
-        $PGDATA = "/var/lib/postgresql/$pgversion/main"
+        $pgdata = "/etc/postgresql/$pgversion/main"
 
         package { "postgresql-$pgversion":
             ensure => installed,
