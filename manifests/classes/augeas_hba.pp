@@ -10,5 +10,7 @@ class postgres::augeas::hba {
         source  => "puppet:///postgres/pg_hba.aug",
         require => Class['augeas'],
     }
+
+    exec { '/bin/true # postgres::aug requires augeas': require => Exec['assert_augeas'] }
 }
 
