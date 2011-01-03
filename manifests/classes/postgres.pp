@@ -46,11 +46,20 @@ class postgres {
             alias       => 'postgres-reload',
         }
 
-        service { 'postgresql':
+        if $pgversion == '8.3' {
+            $servicename = 'postgresql-8.3'
+            $servicealias = 'postgresql'
+        } else {
+            $servicename = 'postgresql'
+            $servicealias = undef
+        }
+
+        service { $servicename:
             ensure     => running,
             enable     => true,
             hasstatus  => true,
             hasrestart => true,
+            alias      => $servicealias,
             require    => [
                 User['postgres'],
                 Package['postgres'],
