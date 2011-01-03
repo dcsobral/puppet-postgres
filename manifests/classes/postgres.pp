@@ -40,18 +40,18 @@ class postgres {
             ],
         }
 
-        exec { '/etc/init.d/postgresql reload':
-            refreshonly => true,
-            require     => Service['postgresql'],
-            alias       => 'postgres-reload',
-        }
-
         if $pgversion == '8.3' {
             $servicename = 'postgresql-8.3'
             $servicealias = 'postgresql'
         } else {
             $servicename = 'postgresql'
             $servicealias = undef
+        }
+
+        exec { "/etc/init.d/$servicename reload":
+            refreshonly => true,
+            require     => Service['postgresql'],
+            alias       => 'postgres-reload',
         }
 
         service { $servicename:
