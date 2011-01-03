@@ -46,10 +46,10 @@ define postgres::hba ($ensure='present', $type, $database, $user, $address=false
         case $type {
             'local': {
                 $changes = [ # warning: order matters !
-                    "set pg_hba.conf/01/type ${type}",
-                    "set pg_hba.conf/01/database ${database}",
-                    "set pg_hba.conf/01/user ${user}",
-                    "set pg_hba.conf/01/method ${method}",
+                    "set pg_hba.conf/1/type ${type}",
+                    "set pg_hba.conf/1/database ${database}",
+                    "set pg_hba.conf/1/user ${user}",
+                    "set pg_hba.conf/1/method ${method}",
                 ]
     
                 $xpath = "pg_hba.conf/*[type='${type}'][database='${database}'][user='${user}'][method='${method}']"
@@ -61,11 +61,11 @@ define postgres::hba ($ensure='present', $type, $database, $user, $address=false
                 }
     
                 $changes = [ # warning: order matters !
-                    "set pg_hba.conf/01/type ${type}",
-                    "set pg_hba.conf/01/database ${database}",
-                    "set pg_hba.conf/01/user ${user}",
-                    "set pg_hba.conf/01/address ${address}",
-                    "set pg_hba.conf/01/method ${method}",
+                    "set pg_hba.conf/1/type ${type}",
+                    "set pg_hba.conf/1/database ${database}",
+                    "set pg_hba.conf/1/user ${user}",
+                    "set pg_hba.conf/1/address ${address}",
+                    "set pg_hba.conf/1/method ${method}",
                 ]
     
                 $xpath = "pg_hba.conf/*[type='${type}'][database='${database}'][user='${user}'][address='${address}'][method='${method}']"
@@ -85,7 +85,7 @@ define postgres::hba ($ensure='present', $type, $database, $user, $address=false
         case $ensure {
             'present': {
                 augeas { "set pg_hba ${name}":
-                    context => "/etc/postgresql/${pgversion}/main/",
+                    context => "/files/etc/postgresql/${pgversion}/main/",
                     changes => $changes,
                     onlyif    => "match ${xpath} size == 0",
                     notify    => Service["postgresql"],
@@ -95,7 +95,7 @@ define postgres::hba ($ensure='present', $type, $database, $user, $address=false
     
                 if $option {
                     augeas { "add option to pg_hba ${name}":
-                        context => "/etc/postgresql/${pgversion}/main/",
+                        context => "/files/etc/postgresql/${pgversion}/main/",
                         changes => "set ${xpath}/method/option ${option}",
                         onlyif    => "match ${xpath}/method/option size == 0",
                         notify    => Service["postgresql"],
@@ -107,9 +107,9 @@ define postgres::hba ($ensure='present', $type, $database, $user, $address=false
     
             'absent': {
                 augeas { "remove pg_hba ${name}":
-                    context => "/etc/postgresql/${pgversion}/main/",
+                    context => "/files/etc/postgresql/${pgversion}/main/",
                     changes => "rm ${xpath}",
-                    onlyif    => "match ${xpath} size == 1",
+                    #onlyif    => "match ${xpath} size == 1",
                     notify    => Service["postgresql"],
                     require => [Package["postgresql-${pgversion}"], File["/usr/share/augeas/lenses/contrib/pg_hba.aug"]],
                     load_path => $lpath,
