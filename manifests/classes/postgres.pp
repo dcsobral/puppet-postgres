@@ -7,11 +7,23 @@ class postgres {
         package { "postgresql-$pgversion":
             ensure => installed,
             alias  => 'postgres',
+            notify => Exec['pg_dropcluster'],
             before => [
                 User['postgres'],
                 Group['postgres'],
                 Service['postgresql'],
             ],
+        }
+
+        exec { "/usr/bin/pg_dropcluster --stop $pgversion main":
+            refreshonly => true,
+            notify      => Exec['pg_createcluster'],
+            alias       => 'pg_dropcluster',
+        }
+
+        exec { "/usr/bin/pg_createcluster --locale en_US.UTF-8 --start $pgversion main":
+            refreshonly => true,
+            alias       => 'pg_createcluster',
         }
 
         user { 'postgres':
