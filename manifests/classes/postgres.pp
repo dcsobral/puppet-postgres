@@ -18,11 +18,13 @@ class postgres {
         exec { "/usr/bin/pg_dropcluster --stop $pgversion main":
             refreshonly => true,
             notify      => Exec['pg_createcluster'],
+            before      => Exec['pg_createcluster'],
             alias       => 'pg_dropcluster',
         }
 
         exec { "/usr/bin/pg_createcluster --locale en_US.UTF-8 --start $pgversion main":
             refreshonly => true,
+            before      => Service['postgresql'],
             alias       => 'pg_createcluster',
         }
 
