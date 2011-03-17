@@ -22,7 +22,7 @@ class postgres {
             alias       => 'pg_dropcluster',
         }
 
-        exec { "/usr/bin/pg_createcluster --locale en_US.UTF-8 --start $pgversion main":
+        exec { "/usr/bin/pg_createcluster --locale en_US.UTF-8 --start $pgversion main && /bin/sleep 1":
             refreshonly => true,
             before      => Service['postgresql'],
             alias       => 'pg_createcluster',
