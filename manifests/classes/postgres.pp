@@ -16,7 +16,7 @@ class postgres {
 
         user { 'postgres':
             ensure  => present,
-            gid     => postgres,
+            gid     => 'postgres',
             require => [
                 Group['postgres'],
                 Package['postgres'],
